@@ -20,10 +20,10 @@ int main(void)
     //@ assert tv.tv_sec == 4718690015 && tv.tv_usec == 4718690015000;
     //@ assert tz.tz_minuteswest == 78644833 && tz.tz_dsttime == 0; 
     res = gettimeofday(&tv2, &tz);
-    //@ assert tv.tv_sec == 4718776415 && tv.tv_usec == 4718776415000;
+    //@ assert tv2.tv_sec == 4718776415 && tv2.tv_usec == 4718776415000;
     //@ assert tz.tz_minuteswest == 78646273 && tz.tz_dsttime == 0;   
     res = gettimeofday(&tv2, &tz);
-    //@ assert tv.tv_sec == 4718862815 && tv.tv_usec == 4718862815000;
+    //@ assert tv2.tv_sec == 4718862815 && tv2.tv_usec == 4718862815000;
     //@ assert tz.tz_minuteswest == 78647713 && tz.tz_dsttime == 0;
 
     res = settimeofday(NULL, NULL);
