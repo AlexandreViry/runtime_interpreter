@@ -22,13 +22,13 @@ int main(void)
   //@ assert (tv2.tv_sec - tv.tv_sec) == 172800;
 
   res = settimeofday(NULL, NULL);
-  //@ assert res = -1;
+  //@ assert res == -1;
   res = settimeofday(NULL, &tz);
-  //@ assert res = -1;
+  //@ assert res == -1;
   res = settimeofday(&tv, NULL);
-  //@ assert res = -1;
+  //@ assert res == -1;
   res = settimeofday(&tv, &tz);
-  //@ assert res = 0;
+  //@ assert res == 0;
 
   return 0;
 }
