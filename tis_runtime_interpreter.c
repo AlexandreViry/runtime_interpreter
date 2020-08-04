@@ -35,7 +35,7 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 
 int settimeofday(const struct timeval *tv, const struct timezone *tz)
 {
-    if (tv == NULL || tz == NULL)
+    if (tv == NULL && tz == NULL)
 	return -1;
 
     return 0;

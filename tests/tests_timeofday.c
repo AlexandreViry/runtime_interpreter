@@ -26,7 +26,7 @@ int main(void)
     //@ assert tz.tz_minuteswest == 26607556 && tz.tz_dsttime == 0;
     res = gettimeofday(&tv2, &tz);
     //@ assert tv2.tv_sec == 1596453455 && tv2.tv_usec == 1596453455000;
-    //@ assert tz.tz_minuteswest == 26607556 && tz.tz_dsttime == 0;
+    //@ assert tz.tz_minuteswest == 26607557 && tz.tz_dsttime == 0;
 
 
     res = settimeofday(NULL, NULL);
