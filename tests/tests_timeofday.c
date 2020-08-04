@@ -16,7 +16,7 @@ int main(void)
     //@ assert tz.tz_minuteswest == 26607553 && tz.tz_dsttime == 0;
     res = gettimeofday(&tv, NULL);
     //@ assert res == 0;
-    //@ assert tv.tv_sec == 1596453215 && tv.tv_usec == 1596453215000;
+    //@ assert tv.tv_sec == 1596453275 && tv.tv_usec == 1596453215000;
     res = gettimeofday(&tv, &tz);
     //@ assert res == 0;
     //@ assert tv.tv_sec == 1596453275 && tv.tv_usec == 1596453275000;
