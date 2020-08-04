@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <sys/time.h>
 
-#define TIS_INIT_TIME 4718517215L
-#define TIS_INCR_TIME 86400L
-
 int main(void)
 {
   int res;
@@ -11,7 +8,6 @@ int main(void)
   struct timeval tv2;
   struct timezone tz;
   
-
   res = gettimeofday(&tv, &tz);
   //@ assert res == 0;
   //@ assert tv.tv_sec == 4718517215 && tv.tv_usec == 4718517215000;
