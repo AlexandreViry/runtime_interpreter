@@ -26,18 +26,18 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 {
     static int count = 0;
     if (tv == NULL && tz == NULL)
-	return -1;
+        return -1;
 
     if (count * TIS_INCR_TIME > sizeof(long) - TIS_INIT_TIME)
-	count = 0;
+        count = 0;
 
     if (tv != NULL) {
-	tv->tv_sec = TIS_INIT_TIME + TIS_INCR_TIME * count;
-	tv->tv_usec = TIS_INIT_TIME * 1000l + TIS_INCR_TIME * 1000l * count;
+        tv->tv_sec = TIS_INIT_TIME + TIS_INCR_TIME * count;
+        tv->tv_usec = TIS_INIT_TIME * 1000l + TIS_INCR_TIME * 1000l * count;
     }
     if (tz != NULL) {
-	tz->tz_minuteswest =  (TIS_INIT_TIME + TIS_INCR_TIME * count) / 60;
-	tz->tz_dsttime = 0;
+        tz->tz_minuteswest =  (TIS_INIT_TIME + TIS_INCR_TIME * count) / 60;
+        tz->tz_dsttime = 0;
     }
     count++;
 
@@ -47,22 +47,12 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 int settimeofday(const struct timeval *tv, const struct timezone *tz)
 {
     if (tv == NULL && tz == NULL)
-	return -1;
+        return -1;
 
     return 0;
 }
 
-time_t my_mktime(struct tm *time)
-{
-    static long res = INIT_VALUE;
-
-    if (time == NULL)
-        return -1;
-    res += INCR_VALUE;
-    return res;
-}
-
-time_t time_structure_modifier(struct tm *time)
+time_t mktime(struct tm *time)
 {
     long res = 0;
 
