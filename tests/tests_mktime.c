@@ -14,9 +14,9 @@ int main(void)
     date.tm_hour = 13;
     date.tm_min = 15;
     date.tm_sec = 36;
-    res = time_structure_modifier(NULL);
+    res = mktime(NULL);
     //@ assert res == -1;
-    res = time_structure_modifier(&date);
+    res = mktime(&date);
     //@assert res == 183403042015131536;
     return 0;
 }
