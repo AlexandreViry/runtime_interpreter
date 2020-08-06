@@ -16,6 +16,11 @@ struct timeval tis_internal_timeval = {
     .tv_usec = TIS_INIT_TIME * 1000L
 };
 
+struct timezone tis_internal_timezone = {
+    .tz_minuteswest = 0,
+    .tz_dsttime = 0
+};
+
 int gettimeofday(struct timeval *tv, struct timezone *tz)
 {
     static int count = 0;
@@ -46,15 +51,10 @@ int settimeofday(const struct timeval *tv, const struct timezone *tz)
         tis_internal_timeval.tv_sec = tv->tv_sec;
         tis_internal_timeval.tv_usec = tv->tv_usec;
     }
-    return 0;
-}
-
-int mktime_error(struct tm *time)
-{
-    if (time->tm_sec < 0 || time->tm_min < 0 || time->tm_hour < 0)
-        return -1;
-    if (time->tm_year < 1900 || time->tm_mon < 0 || time->tm_wday < 0)
-        return -1;
+    if (tz != NULL) {
+        tis_internal_timezone.tz_minuteswest = tz->tz_minuteswest;
+        tis_internal_timezone.tz_dsttime = tz->tz_dsttime;
+    }
     return 0;
 }
 
@@ -84,6 +84,5 @@ time_t mktime(struct tm *time)
     res += time->tm_mday *1000000;
     res += time->tm_mon * 100000000;
     res += time->tm_year * 10000000000;
-    printf("%ld\n", res);
     return res;
 }
