@@ -33,17 +33,17 @@ int main(void)
     res = settimeofday(&tv, NULL);
 
     tv.tv_sec = 4618603615;
-    tv.tv_usec = 4618603615;
+    tv.tv_usec = 4618603615000;
     tz.tz_minuteswest = 76976726;
     tz.tz_dsttime = 0;
     //@ assert res == 0;
     res = settimeofday(&tv, &tz);
     //@ assert res == 0;
     res = gettimeofday(&tv, &tz);
-    //@ assert tv.tv_sec == 4618603615 + 5 * 86400 && tv.tv_usec == 4618603615000 + 86400 * 5000;
+    //@ assert tv.tv_sec == 4619035615 && tv.tv_usec == 4619035615000 + 432000000;
     //@ assert tz.tz_minuteswest == 76983926 && tz.tz_dsttime == 0;
     res = gettimeofday(&tv, &tz);
-    //@ assert tv.tv_sec == 4618603615 + 86400 * 6 && tv.tv_usec == 4618603615000 + 86400 * 6000;
+    //@ assert tv.tv_sec == 4619122015 && tv.tv_usec == 4619122015000 + 86400 * 6000;
     //@ assert tz.tz_minuteswest == 76985366 && tz.tz_dsttime == 0;
     printf("sec = %ld, usec = %ld, min = %d\n",tv.tv_sec, tv.tv_usec, tz.tz_minuteswest);
 
