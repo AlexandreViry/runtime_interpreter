@@ -5,7 +5,6 @@ int main(void)
 {
     int res;
     struct timeval tv;
-    struct timeval tv2;
     struct timezone tz;
 
     res = gettimeofday(NULL, NULL);
@@ -20,11 +19,11 @@ int main(void)
     res = gettimeofday(&tv, &tz);
     //@ assert tv.tv_sec == 4718690015 && tv.tv_usec == 4718690015000;
     //@ assert tz.tz_minuteswest == 78644833 && tz.tz_dsttime == 0;
-    res = gettimeofday(&tv2, &tz);
-    //@ assert tv2.tv_sec == 4718776415 && tv2.tv_usec == 4718776415000;
+    res = gettimeofday(&tv, &tz);
+    //@ assert tv.tv_sec == 4718776415 && tv.tv_usec == 4718776415000;
     //@ assert tz.tz_minuteswest == 78646273 && tz.tz_dsttime == 0;
-    res = gettimeofday(&tv2, &tz);
-    //@ assert tv2.tv_sec == 4718862815 && tv2.tv_usec == 4718862815000;
+    res = gettimeofday(&tv, &tz);
+    //@ assert tv.tv_sec == 4718862815 && tv.tv_usec == 4718862815000;
     //@ assert tz.tz_minuteswest == 78647713 && tz.tz_dsttime == 0;
 
     res = settimeofday(NULL, NULL);
@@ -32,9 +31,21 @@ int main(void)
     res = settimeofday(NULL, &tz);
     //@ assert res == 0;
     res = settimeofday(&tv, NULL);
+
+    tv.tv_sec = 4618603615;
+    tv.tv_usec = 4618603615;
+    tz.tz_minuteswest = 76976726;
+    tz.tz_dsttime = 0;
     //@ assert res == 0;
     res = settimeofday(&tv, &tz);
     //@ assert res == 0;
+    res = gettimeofday(&tv, &tz);
+    //@ assert tv.tv_sec == 4618603615 + 5 * 86400 && tv.tv_usec == 4618603615000 + 86400 * 5000;
+    //@ assert tz.tz_minuteswest == 76983926 && tz.tz_dsttime == 0;
+    res = gettimeofday(&tv, &tz);
+    //@ assert tv.tv_sec == 4618603615 + 86400 * 6 && tv.tv_usec == 4618603615000 + 86400 * 6000;
+    //@ assert tz.tz_minuteswest == 76985366 && tz.tz_dsttime == 0;
+    printf("sec = %ld, usec = %ld, min = %d\n",tv.tv_sec, tv.tv_usec, tz.tz_minuteswest);
 
     return 0;
 }

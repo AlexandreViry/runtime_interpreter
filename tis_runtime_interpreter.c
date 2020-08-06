@@ -2,22 +2,22 @@
 #include <sys/time.h>
 #include <time.h>
 
-#ifndef TIS_INIT_TIME
+#ifndef TIS_INIT_TIME_SEC
 // Number of elapsed seconds on August 3, 2020.
-#define TIS_INIT_TIME 1596453215L
+#define TIS_INIT_TIME_SEC 1596453215L
 #endif
-#ifndef TIS_INCR_TIME
+#ifndef TIS_INCR_TIME_SEC
 // Number of seconds incremented by default.
-#define TIS_INCR_TIME 60L
+#define TIS_INCR_TIME_SEC 60L
 #endif
 
 struct timeval tis_internal_timeval = {
-    .tv_sec = TIS_INIT_TIME,
-    .tv_usec = TIS_INIT_TIME * 1000L
+    .tv_sec = TIS_INIT_TIME_SEC,
+    .tv_usec = TIS_INIT_TIME_SEC * 1000L
 };
 
 struct timezone tis_internal_timezone = {
-    .tz_minuteswest = 0,
+    .tz_minuteswest = TIS_INIT_TIME_SEC / 60L,
     .tz_dsttime = 0
 };
 
@@ -27,15 +27,15 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
     if (tv == NULL && tz == NULL)
         return -1;
 
-    if (count * TIS_INCR_TIME > sizeof(long) - tis_internal_timeval.tv_sec)
+    if (count * TIS_INCR_TIME_SEC > sizeof(long) - tis_internal_timeval.tv_sec)
         count = 0;
 
     if (tv != NULL) {
-        tv->tv_sec = tis_internal_timeval.tv_sec + TIS_INCR_TIME * count;
-        tv->tv_usec = tis_internal_timeval.tv_usec + TIS_INCR_TIME * 1000l * count;
+        tv->tv_sec = tis_internal_timeval.tv_sec + TIS_INCR_TIME_SEC * count;
+        tv->tv_usec = tis_internal_timeval.tv_usec + TIS_INCR_TIME_SEC * 1000L * count;
     }
     if (tz != NULL) {
-        tz->tz_minuteswest =  (tis_internal_timeval.tv_sec + TIS_INCR_TIME * count) / 60;
+        tz->tz_minuteswest = tis_internal_timezone.tz_minuteswest + TIS_INCR_TIME_SEC / 60L * count;
         tz->tz_dsttime = 0;
     }
     count++;
