@@ -24,6 +24,7 @@ struct timezone tis_internal_timezone = {
 int gettimeofday(struct timeval *tv, struct timezone *tz)
 {
     static int count = 0;
+    printf("%d\n", count);
     if (tv == NULL && tz == NULL)
         return -1;
 
