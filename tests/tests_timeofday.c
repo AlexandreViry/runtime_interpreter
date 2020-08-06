@@ -44,13 +44,11 @@ int main(void)
     res = settimeofday(&tv, &tz);
     //@ assert res == 0;
     res = gettimeofday(&tv, &tz);
-    //@ assert tv.tv_sec == 1326953455 + 5 * 60 && tv.tv_usec == (1326953455 * + 5 * 60) * 1000;
+    //@ assert tv.tv_sec == 1326953755 && tv.tv_usec == 1326953755000;
     //@ assert tz.tz_minuteswest == 22115895 && tz.tz_dsttime == 0;
-    printf("sec = %ld, usec = %ld, min = %d\n",tv.tv_sec, tv.tv_usec, tz.tz_minuteswest);
     res = gettimeofday(&tv, &tz);
-    //@ assert tv.tv_sec == 1326953455 + 6 * 60 && tv.tv_usec ==  1326953455000 + 6 * 60000;
+    //@ assert tv.tv_sec == 1326953815 && tv.tv_usec == 1326953815000;
     //@ assert tz.tz_minuteswest == 22115896 && tz.tz_dsttime == 0;
-    printf("sec = %ld, usec = %ld, min = %d\n",tv.tv_sec, tv.tv_usec, tz.tz_minuteswest);
 
     return 0;
 }
