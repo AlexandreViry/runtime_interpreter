@@ -11,7 +11,7 @@ int main(void)
     //@ assert res == -1;
     res = gettimeofday(NULL, &tz);
     //@ assert res == 0;
-    //@ assert tz.tz_minuteswest == 7863393 && tz.tz_dsttime == 0;
+    //@ assert tz.tz_minuteswest == 78643393 && tz.tz_dsttime == 0;
     res = gettimeofday(&tv, NULL);
     //@ assert res == 0;
     //@ assert tz.tz_minuteswest == 78641953 && tz.tz_dsttime == 0;
