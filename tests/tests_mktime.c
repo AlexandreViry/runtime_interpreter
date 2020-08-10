@@ -4,7 +4,7 @@
 int main(void)
 {
     struct tm date;
-    long res;
+    time_t res;
 
     date.tm_wday = 5;
     date.tm_yday = 94;
@@ -17,6 +17,7 @@ int main(void)
     res = mktime(NULL);
     //@ assert res == -1;
     res = mktime(&date);
+    printf("%ld\n", res);
     //@assert res == 20150403131536;
     return 0;
 }

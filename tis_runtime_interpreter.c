@@ -58,26 +58,19 @@ int settimeofday(const struct timeval *tv, const struct timezone *tz)
     return 0;
 }
 
-int error_handling(struct tm *time)
-{
-    if (time->tm_sec < 0 || time->tm_min < 0 || time->tm_hour < 0)
-        return -1;
-    if (time->tm_sec > 60 || time->tm_min > 59 || time->tm_hour > 59)
-        return -1;
-    if (time->tm_mday < 1 || time->tm_mon < 1|| time->tm_year < 1900)
-        return -1;
-    if (time->tm_mday > 31 || time->tm_mon > 12)
-        return -1;
-    return 0;
-}
-
 time_t mktime(struct tm *time)
 {
-    long res = 0;
+    time_t res = 0;
     int count = 0;
 
-    if (time == NULL || error_handling(time) == -1)
+    if (time == NULL || time->tm_year < 0 ||
+        time->tm_sec < 0 || time->tm_sec > 60 ||
+        time->tm_min < 0 || time->tm_min > 60 ||
+        time->tm_hour < 0 || time->tm_hour > 24 ||
+        time->tm_mday < 0 || time->tm_mday > 31 ||
+        time->tm_mon < 0 || time->tm_mon > 12)
         return -1;
+
     res += time->tm_sec;
     res += time->tm_min * 100;
     res += time->tm_hour * 10000;

@@ -4,7 +4,7 @@
 int main(void)
 {
     struct tm date;
-    long res;
+    time_t res;
 
     date.tm_wday = 8;
     date.tm_yday = 980;
