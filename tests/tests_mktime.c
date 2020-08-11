@@ -18,6 +18,6 @@ int main(void)
     //@ assert res == -1;
     res = mktime(&date);
     printf("%ld\n", res);
-    //@assert res == 20150403131536;
+    //@assert res == 36151303042015;
     return 0;
 }

@@ -1,5 +1,8 @@
 #include <sys/time.h>
 #include <time.h>
+#include <stdatomic.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #ifndef TIS_INIT_TIME_SEC
 // Number of elapsed seconds on August 3, 2020.
@@ -10,12 +13,12 @@
 #define TIS_INCR_TIME_SEC 60L
 #endif
 
-struct timeval tis_internal_timeval = {
+struct timeval tis_internal_tv = {
     .tv_sec = TIS_INIT_TIME_SEC,
     .tv_usec = TIS_INIT_TIME_SEC * 1000L
 };
 
-struct timezone tis_internal_timezone = {
+struct timezone tis_internal_tz = {
     .tz_minuteswest = TIS_INIT_TIME_SEC / 60L,
     .tz_dsttime = 0
 };
@@ -27,19 +30,17 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
     if (tv == NULL && tz == NULL)
         return -1;
 
-    if (count * TIS_INCR_TIME_SEC > sizeof(long) - tis_internal_timeval.tv_sec)
-        count = 0;
-
     if (tv != NULL) {
-        tv->tv_sec = tis_internal_timeval.tv_sec + TIS_INCR_TIME_SEC * count;
-        tv->tv_usec = tis_internal_timeval.tv_usec + TIS_INCR_TIME_SEC * 1000L * count;
+        tv->tv_sec = tis_internal_tv.tv_sec + TIS_INCR_TIME_SEC * count;
+        tv->tv_usec = tis_internal_tv.tv_usec + TIS_INCR_TIME_SEC * 1000L * count;
     }
+
     if (tz != NULL) {
-        tz->tz_minuteswest = tis_internal_timezone.tz_minuteswest + TIS_INCR_TIME_SEC / 60L * count;
+        tz->tz_minuteswest = tis_internal_tz.tz_minuteswest + TIS_INCR_TIME_SEC / 60L * count;
         tz->tz_dsttime = 0;
     }
-    count++;
 
+    count++;
     return 0;
 }
 
@@ -47,14 +48,17 @@ int settimeofday(const struct timeval *tv, const struct timezone *tz)
 {
     if (tv == NULL && tz == NULL)
         return -1;
+
     if (tv != NULL) {
-        tis_internal_timeval.tv_sec = tv->tv_sec;
-        tis_internal_timeval.tv_usec = tv->tv_usec;
+        tis_internal_tv.tv_sec = tv->tv_sec;
+        tis_internal_tv.tv_usec = tv->tv_usec;
     }
+
     if (tz != NULL) {
-        tis_internal_timezone.tz_minuteswest = tz->tz_minuteswest;
-        tis_internal_timezone.tz_dsttime = tz->tz_dsttime;
+        tis_internal_tz.tz_minuteswest = tz->tz_minuteswest;
+        tis_internal_tz.tz_dsttime = tz->tz_dsttime;
     }
+
     return 0;
 }
 
@@ -71,11 +75,11 @@ time_t mktime(struct tm *time)
         time->tm_mon < 0 || time->tm_mon > 12)
         return -1;
 
-    res += time->tm_sec;
-    res += time->tm_min * 100;
-    res += time->tm_hour * 10000;
-    res += time->tm_mday *1000000;
-    res += time->tm_mon * 100000000;
-    res += time->tm_year * 10000000000;
+    res += time->tm_year;
+    res += time->tm_mon * 10000;
+    res += time->tm_mday * 1000000;
+    res += time->tm_hour *100000000;
+    res += time->tm_min * 10000000000;
+    res += time->tm_sec * 1000000000000;
     return res;
 }
